@@ -15,7 +15,7 @@ const botonesUnidad = document.querySelectorAll('.unidades__btn');
 
 /** Estado de la aplicación. */
 const estado = {
-  unidad: leerPreferencia('clima:unidad', 'celsius'),
+  unidad: leerPreferencia('clima:unidad', 'celsius') === 'fahrenheit' ? 'fahrenheit' : 'celsius',
   ciudad: null,                 // ciudad seleccionada
   controladorBusqueda: null,    // AbortController de la búsqueda en curso
   controladorPronostico: null,  // AbortController del pronóstico en curso
@@ -47,6 +47,9 @@ async function realizarBusqueda(texto) {
   const controlador = new AbortController();
   estado.controladorBusqueda = controlador;
 
+  // Una búsqueda nueva descarta la ciudad anterior y su pronóstico pendiente.
+  estado.controladorPronostico?.abort();
+  estado.ciudad = null;
   ui.limpiar(detalle);
   ui.mostrarCargaResultados(resultados, `Buscando “${consulta}”…`);
   botonBuscar.disabled = true;
