@@ -123,7 +123,13 @@ main { flex: 1; padding-bottom: 2rem; }
 }
 .ciudad:hover, .ciudad:focus-visible { transform: translateY(-2px); border-color: var(--primario); outline: none; }
 .ciudad.seleccionada { border-color: var(--primario); }
-.ciudad__bandera { font-size: 1.8rem; line-height: 1; }
+.ciudad__bandera { line-height: 1; }
+.pais {
+  display: inline-block; min-width: 2.4em; text-align: center; vertical-align: middle;
+  font-size: .8rem; font-weight: 700; letter-spacing: .04em; line-height: 1;
+  padding: .35em .45em; border-radius: 6px;
+  background: var(--primario); color: #fff;
+}
 .ciudad__texto { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .ciudad__region { color: var(--texto-suave); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ciudad__poblacion { font-size: .8rem; color: var(--texto-suave); white-space: nowrap; }

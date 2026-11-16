@@ -15,10 +15,14 @@ function crear(etiqueta, clase, texto) {
   return el;
 }
 
-/** Convierte un código de país ISO (MX) a su emoji de bandera (🇲🇽). */
-function bandera(codigoPais) {
-  if (!codigoPais || codigoPais.length !== 2) return '🌍';
-  return String.fromCodePoint(...[...codigoPais.toUpperCase()].map((c) => 0x1f1a5 + c.charCodeAt(0)));
+/**
+ * Crea una etiqueta con el código ISO del país (MX, ES, JP…).
+ * Se usa en lugar del emoji de bandera porque Windows no dibuja esos emojis.
+ */
+function etiquetaPais(codigoPais) {
+  const el = crear('span', 'pais', codigoPais ? codigoPais.toUpperCase() : '—');
+  el.setAttribute('aria-hidden', 'true');
+  return el;
 }
 
 function reemplazar(contenedor, ...hijos) {
@@ -103,7 +107,7 @@ export function mostrarCiudades(contenedor, ciudades, consulta, alSeleccionar) {
   for (const ciudad of ciudades) {
     const nodo = plantilla.content.cloneNode(true);
     const boton = nodo.querySelector('.ciudad');
-    nodo.querySelector('.ciudad__bandera').textContent = bandera(ciudad.country_code);
+    nodo.querySelector('.ciudad__bandera').append(etiquetaPais(ciudad.country_code));
     nodo.querySelector('.ciudad__nombre').textContent = ciudad.name;
     nodo.querySelector('.ciudad__region').textContent =
       [ciudad.admin1, ciudad.country].filter(Boolean).join(', ') || 'Región desconocida';
@@ -145,8 +149,10 @@ export function mostrarPronostico(contenedor, ciudad, datos) {
   const horaLocal = new Date(actual.time).toLocaleString('es-MX', {
     weekday: 'long', hour: '2-digit', minute: '2-digit',
   });
+  const lugar = crear('h2', 'actual__lugar');
+  lugar.append(etiquetaPais(ciudad.country_code), ` ${ciudad.name}`);
   textos.append(
-    crear('h2', 'actual__lugar', `${bandera(ciudad.country_code)} ${ciudad.name}`),
+    lugar,
     crear('p', 'actual__sub', `${[ciudad.admin1, ciudad.country].filter(Boolean).join(', ')} · Hora local: ${horaLocal}`),
     crear('p', 'actual__temp', `${Math.round(actual.temperature_2m)}${u.temperature_2m}`),
     crear('p', 'actual__desc', descripcion),

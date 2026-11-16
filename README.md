@@ -119,7 +119,7 @@ Todos los errores muestran un botón **Reintentar**.
 
 1. Abre la aplicación: **https://leyesdavila.github.io/clima-al-instante/**
 2. Escribe el nombre de una ciudad (mínimo 2 letras) y presiona **Buscar** o Enter. También puedes usar las búsquedas rápidas (*Monterrey, Ciudad de México, Madrid, Tokio*).
-3. Aparece la lista de ciudades que coinciden, con bandera, estado/país y población. **Elige una**.
+3. Aparece la lista de ciudades que coinciden, con código de país, estado/país y población. **Elige una**.
 4. Se muestra el clima actual (temperatura, sensación térmica, humedad, viento, precipitación y hora local) y el **pronóstico de 7 días**.
 5. Con el interruptor **°C / °F** de la esquina superior cambias la unidad; la app vuelve a consultar la API y recuerda tu preferencia.
 
@@ -180,7 +180,7 @@ Vista en celular:
 
 **Robustez.** Se usa `AbortController` para dos cosas: poner un tiempo límite de 10 s y cancelar una búsqueda anterior si el usuario hace otra antes de que termine (evita que una respuesta lenta “pise” a una más reciente). También descubrí un detalle de la API que no está muy visible en la documentación: cuando no hay coincidencias, no regresa una lista vacía sino que omite la propiedad `results`; por eso se valida con `Array.isArray()`.
 
-**Presentación de datos.** Los componentes se crean a partir de elementos `<template>` del HTML y se llenan con `textContent`, nunca con `innerHTML`, para que ningún texto que venga del servicio externo pueda inyectar HTML. Los datos crudos se transforman antes de mostrarse: códigos WMO a texto e ícono, códigos de país a emoji de bandera, números con `Intl.NumberFormat` y fechas con `toLocaleDateString('es-MX')`.
+**Presentación de datos.** Los componentes se crean a partir de elementos `<template>` del HTML y se llenan con `textContent`, nunca con `innerHTML`, para que ningún texto que venga del servicio externo pueda inyectar HTML. Los datos crudos se transforman antes de mostrarse: códigos WMO a texto e ícono, números con `Intl.NumberFormat` y fechas con `toLocaleDateString('es-MX')`.
 
 **Experiencia de usuario.** Cada consulta tiene tres estados además del exitoso: **carga** (tarjetas esqueleto y spinner, con `aria-busy`), **vacío** (mensaje con sugerencias) y **error** (mensaje comprensible según el tipo de falla y botón *Reintentar*). Esto es justo lo que pide la situación de trabajo: integrar datos externos sin que el usuario tenga que capturarlos y sin dejarlo con una pantalla en blanco cuando algo falla.
 
