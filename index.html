@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clima al Instante</title>
+  <meta name="description" content="Miniaplicación web que consulta el clima actual y el pronóstico de 7 días de cualquier ciudad usando la API REST pública de Open-Meteo.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor encabezado__fila">
+      <h1 class="marca"><span aria-hidden="true">⛅</span> Clima al Instante</h1>
+      <div class="unidades" role="group" aria-label="Unidad de temperatura">
+        <button type="button" class="unidades__btn activo" data-unidad="celsius" aria-pressed="true">°C</button>
+        <button type="button" class="unidades__btn" data-unidad="fahrenheit" aria-pressed="false">°F</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="buscador" aria-labelledby="titulo-buscador">
+      <h2 id="titulo-buscador" class="sr-only">Buscar ciudad</h2>
+      <form id="form-busqueda" class="buscador__form" autocomplete="off" novalidate>
+        <label for="campo-ciudad" class="buscador__label">¿De qué ciudad quieres saber el clima?</label>
+        <div class="buscador__fila">
+          <input id="campo-ciudad" name="ciudad" type="search" placeholder="Ej. Monterrey, Madrid, Tokio…" minlength="2" maxlength="60" required>
+          <button type="submit" class="btn btn--primario">Buscar</button>
+        </div>
+        <p id="mensaje-validacion" class="buscador__ayuda" aria-live="polite"></p>
+      </form>
+      <div class="sugerencias" aria-label="Búsquedas rápidas">
+        <span>Prueba con:</span>
+        <button type="button" class="chip" data-ciudad="Monterrey">Monterrey</button>
+        <button type="button" class="chip" data-ciudad="Ciudad de México">Ciudad de México</button>
+        <button type="button" class="chip" data-ciudad="Madrid">Madrid</button>
+        <button type="button" class="chip" data-ciudad="Tokio">Tokio</button>
+      </div>
+    </section>
+
+    <!-- Aquí se insertan dinámicamente los resultados de la búsqueda (ciudades) -->
+    <section id="resultados" class="resultados" aria-live="polite" aria-busy="false"></section>
+
+    <!-- Aquí se insertan dinámicamente el clima actual y el pronóstico -->
+    <section id="detalle" class="detalle" aria-live="polite" aria-busy="false"></section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      Datos meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0) ·
+      Actividad 4 · Laboratorio de Programación Web · FIME UANL
+    </div>
+  </footer>
+
+  <!-- Plantillas usadas por JavaScript para crear componentes -->
+  <template id="tpl-ciudad">
+    <li>
+      <button type="button" class="ciudad">
+        <span class="ciudad__bandera" aria-hidden="true"></span>
+        <span class="ciudad__texto">
+          <strong class="ciudad__nombre"></strong>
+          <small class="ciudad__region"></small>
+        </span>
+        <span class="ciudad__poblacion"></span>
+      </button>
+    </li>
+  </template>
+
+  <template id="tpl-dia">
+    <li class="dia">
+      <span class="dia__nombre"></span>
+      <span class="dia__icono" aria-hidden="true"></span>
+      <span class="dia__desc"></span>
+      <span class="dia__temps"><strong class="dia__max"></strong> <span class="dia__min"></span></span>
+      <span class="dia__lluvia" title="Probabilidad de lluvia"></span>
+    </li>
+  </template>
+</body>
+</html>
